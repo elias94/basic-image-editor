@@ -7,7 +7,7 @@
           v-model="brightness"
           v-on:click="onCorrectionChange"
           v-on:mousemove="onCorrectionChange"
-          color="#25A95B"
+          :color="brightnessColor"
           :disabled="!isImageUploaded"
         />
       </Card>
@@ -17,7 +17,7 @@
           v-model="contrast"
           v-on:click="onCorrectionChange"
           v-on:mousemove="onCorrectionChange"
-          color="#4A90E2"
+          :color="contrastColor"
           :disabled="!isImageUploaded"
         />
       </Card>
@@ -53,11 +53,16 @@ export default {
     ImageSlider,
     ImagePicker,
   },
+  props: {
+    brightnessColor: String,
+    contrastColor: String,
+    initialValue: String,
+  },
   data() {
     return {
       initialImageData: null,
-      brightness: '0',
-      contrast: '0',
+      brightness: this.initialValue,
+      contrast: this.initialValue,
       fileName: '',
     };
   },
@@ -65,9 +70,6 @@ export default {
     isImageUploaded() {
       return this.initialImageData;
     }
-  },
-  props: {
-    msg: String
   },
   methods: {
     onImageSelection(imgFile) {

@@ -6,7 +6,11 @@
       :imageHeader="imageHeader"
       :imageProfile="imageProfile"
     />
-    <PageContent />
+    <PageContent
+      brightnessColor="#25A95B"
+      contrastColor="#4A90E2"
+      initialValue="0"
+    />
   </div>
 </template>
 
