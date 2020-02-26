@@ -17,15 +17,21 @@ export default {
 .ProfilePicture {
   border: 3px solid #FFF;
   border-radius: 50%;
-  width: 80px;
-  min-height: 80px;
+  width: 60px;
+  min-height: 60px;
   overflow: hidden;
-
-  margin-top: -70px;
   background: transparent;
+  margin-top: -50px;
+
+  @media only screen and (min-width: 768px) {
+    width: 80px;
+    min-height: 80px;
+    margin-top: -70px;
+  }
 
   &__image {
     max-width: 100%;
+    min-height: 100%;
   }
 }
 </style>

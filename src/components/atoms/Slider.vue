@@ -1,27 +1,61 @@
 <template>
   <input
     type="range"
+    ref="slider"
     class="Slider"
     min="-100"
     max="100"
     :name="name"
     :value="value"
+    :style="cssProps"
+    :disabled="disabled"
     v-on:input="onInput"
+    v-on:click="onClick"
     v-on:mousedown="startDrag"
     v-on:mousemove="onDrag"
   />
 </template>
 
 <script>
+import { hexToRgb } from '@/utils/utils.js'
+
 export default {
   name: 'Slider',
   props: {
     value: String,
     name: String,
+    disabled: Boolean,
+    color: {
+      type: String,
+      default: '#606670',
+    },
+    alpha: {
+      type: Number,
+      default: .25,
+      validator: value => value >= 0 && value <= 1,
+    }
   },
   data() {
     return {
       isDragging: false,
+    }
+  },
+  computed: {
+    cssProps() {
+      const rgbValue = hexToRgb(this.color)
+      // transpose value from -100:100 to 0:100
+      const val = (parseInt(this.value, 10) + 100) / 2
+      // convert rgb object to rgba string using the alpha parameter
+      const rgbA = (alpha) => `rgba(${rgbValue.r}, ${rgbValue.g}, ${rgbValue.b}, ${alpha})`
+      // set the background dynamically for chrome browsers using a linear-gradient
+      const background = `linear-gradient(to right, \
+          ${rgbA(1)} 0%, ${rgbA(1)} ${val}%, \
+          ${rgbA(.25)} ${val}%, ${rgbA(.25)} 100%)`
+
+      return {
+        '--main-color': this.color,
+        'background': this.disabled ? '#dedede' : background,
+      }
     }
   },
   methods: {
@@ -39,6 +73,9 @@ export default {
     onInput(event) {
       this.$emit('input', event.target.value)
     },
+    onClick(event) {
+      this.$emit('click', event.target.value)
+    },
   },
   mounted() {
     window.addEventListener('mouseup', this.stopDrag)
@@ -52,92 +89,140 @@ export default {
 <style lang="scss">
 .Slider {
   -webkit-appearance: none;
+  width: 100%;
+  cursor: pointer;
+  height: 5px;
+  margin: 0;
+  transition: 0.1s ease-in;
   vertical-align: middle;
-  outline: none;
-  border: none;
-  padding: 0;
-  background: none;
-  width: 300px;
+  border-radius: 5px;
 
-  &::-webkit-slider-runnable-track {
-    background-color: #d7dbdd;
-    height: 6px;
-    border-radius: 3px;
-    border: 1px solid transparent;
-  }
-
-  &[disabled]::-webkit-slider-runnable-track {
-    border: 1px solid #d7dbdd;
-    background-color: transparent;
-    opacity: 0.4;
-  }
-
-  &::-moz-range-track {
-    background-color: #d7dbdd;
-    height: 6px;
-    border-radius: 3px;
-    border: none;
-  }
-
-  &::-ms-track {
-    color: transparent;
-    border: none;
-    background: none;
+  @media only screen and (min-width: 768px) {
     height: 6px;
   }
 
-  &::-ms-fill-lower { 
-    background-color: #d7dbdd;
-    border-radius: 3px;
+  &:focus {
+    outline: none;
   }
 
-  &::-ms-fill-upper { 
-    background-color: #d7dbdd;
-    border-radius: 3px;
+  &::-webkit-slider-thumb {
+    -webkit-appearance: none !important;
+    border-radius: 50%;
+    background-color: var(--main-color);
+    height: 20px;
+    width: 20px;
+    border: 3px solid #FFF;
+    @media only screen and (min-width: 768px) {
+      height: 22px;
+      width: 22px; 
+    }
   }
 
-  &::-ms-tooltip { display: none; /* display and visibility only */ }
+  &[disabled]::-webkit-slider-thumb {
+    background-color: #aaa;
+  }
 
   &::-moz-range-thumb {
     border-radius: 20px;
-    height: 18px;
-    width: 18px;
+    height: 20px;
+    width: 20x;
     border: none;
     background: none;
-    background-color: #606670;
+    background-color: var(--main-color);
     border: 3px solid #FFF;
+    z-index: 10;
+
+    @media only screen and (min-width: 768px) {
+      height: 22px;
+      width: 22px; 
+    }
+  }
+
+  &[disabled]::-moz-range-thumb {
+    background-color: #aaa;
+  }
+
+  &::-moz-range-progress {
+    background-color: var(--main-color);
+    height: 5px;
+  }
+
+  &[disabled]::-moz-range-progress {
+    background-color: #dedede;
   }
 
   &:active::-moz-range-thumb {
     outline: none;
   }
 
-  &::-webkit-slider-thumb {
-    -webkit-appearance: none !important;
-    border-radius: 100%;
-    background-color: #606670;
-    height: 18px;
-    width: 18px;
-    margin-top: -7px;
-    border: 3px solid #FFF;
+  &::-moz-range-track {
+    background-color: var(--main-color);
+    opacity: .25;
+    height: 5px;
+    border-radius: 3px;
+    border: none;
+
+    @media only screen and (min-width: 768px) {
+      height: 6px;
+    }
   }
 
-  &[disabled]::-webkit-slider-thumb {
-    background-color: transparent;
-    border: 1px solid #d7dbdd;
+  &[disabled]::-moz-range-track {
+    background-color: #dedede;
+    opacity: 1;
   }
 
-  &:active::-webkit-slider-thumb {
-    outline: none;
+  &::-moz-focus-outer {
+    border: 0;  // remove dotted outline on firefox
+  }
+
+  &::-ms-track {
+    color: transparent;
+    border: none;
+    background: none;
+    height: 5px;
+
+    @media only screen and (min-width: 768px) {
+      height: 6px;
+    }
+  }
+
+  &::-ms-fill-lower { 
+    background-color: var(--main-color);
+    border-radius: 3px;
+  }
+
+  &::-ms-fill-upper { 
+    background-color: var(--main-color);
+    opacity: .25;
+    border-radius: 3px;
+  }
+
+  &[disabled]::-ms-fill-lower, &[disabled]::-ms-fill-upper {
+    background-color: #dedede;
+    opacity: 1;
+  }
+
+  &::-ms-tooltip {
+    display: none;
   }
 
   &::-ms-thumb { 
     border-radius: 100%;
-    background-color: #606670;
-    height: 18px;
-    width: 18px; 
+    background-color: var(--main-color);
+    height: 20px;
+    width: 20px; 
     border: none;
     border: 3px solid #FFF;
+
+    @media only screen and (min-width: 768px) {
+      height: 22px;
+      width: 22px; 
+    }
+  }
+
+  &[disabled]::-ms-thumb {
+    background-color: #aaa;
   }
 
   &:active::-ms-thumb {

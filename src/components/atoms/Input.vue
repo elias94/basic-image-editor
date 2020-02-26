@@ -32,6 +32,8 @@ export default {
   font-weight: 500;
   outline: none;
   border-radius: 5px;
+  width: 100%;
+  max-width: 300px;
   
   position: relative;
   display: flex;
@@ -43,6 +45,8 @@ export default {
     text-transform: uppercase;
     border-right: 1px solid #DCDEE4;
     z-index: 1;
+
+    user-select: none;
 
     & > span {
       border-top-right-radius: 0;
@@ -65,6 +69,11 @@ export default {
     text-transform: uppercase;
     padding: 0 5px;
     color: #25A95B;
+    -webkit-user-select: none;  /* Chrome all / Safari all */
+    -moz-user-select: none;     /* Firefox all */
+    -ms-user-select: none;      /* IE 10+ */
+    user-select: none;          /* Likely future */
+    width: 100%;
 
     overflow:hidden; 
     white-space:nowrap; 

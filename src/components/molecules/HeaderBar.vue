@@ -36,13 +36,20 @@ export default {
   }
 
   &__title {
-    font-size: 20px;
+    font-size: 15px;
     margin-bottom: 10px;
+    @media only screen and (min-width: 768px) {
+      font-size: 20px; 
+    }
   }
 
   &__subtitle {
-    font-size: 15px;
+    font-size: 13px;
     font-weight: normal;
+
+    @media only screen and (min-width: 768px) {
+      font-size: 15px; 
+    }
   }
 }
 </style>

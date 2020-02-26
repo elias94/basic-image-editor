@@ -21,7 +21,7 @@ export default {
 
 <style lang="scss">
 .Header {
-  height: 250px;
+  height: 215px;
   display: flex;
   flex-direction: column;
   align-items: center;
