@@ -1,24 +1,42 @@
 # basic-image-editor
 
-## Project setup
+http://basic-image-editor.herokuapp.com/
+
+## Test project in local
+1. `npm install`
+2. `npm run serve`
+
+## Build project on heroku
+1. `npm run build`
+2. `git add . && git commit -a -m "Updated"`
+3. `git push heroku master`
+
+#### Project setup
 ```
 npm install
 ```
 
-### Compiles and hot-reloads for development
+#### Compiles and hot-reloads for development
 ```
 npm run serve
 ```
 
-### Compiles and minifies for production
+#### Compiles and minifies for production
 ```
 npm run build
 ```
 
-### Lints and fixes files
+#### Run e2e tests environment
+```
+npm run test:e2e
+```
+
+#### Lints and fixes files
 ```
 npm run lint
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+#### Start the node express server
+```
+npm run start
+```
