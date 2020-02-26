@@ -50,7 +50,15 @@ export default {
       // set the background dynamically for chrome browsers using a linear-gradient
       const background = `linear-gradient(to right, \
           ${rgbA(1)} 0%, ${rgbA(1)} ${val}%, \
-          ${rgbA(.25)} ${val}%, ${rgbA(.25)} 100%)`
+          ${rgbA(this.alpha)} ${val}%, ${rgbA(this.alpha)} 100%)`
+
+      // avoid wrong behaviour using css for chrome/safari
+      if (this.$browserDetect.isFirefox || this.$browserDetect.isIE || this.$browserDetect.isEdge) {
+        return {
+          '--main-color': this.color,
+          '--main-color-rgba': rgbA(this.alpha),
+        }
+      }
 
       return {
         '--main-color': this.color,
@@ -124,17 +132,16 @@ export default {
 
   &::-moz-range-thumb {
     border-radius: 20px;
-    height: 20px;
-    width: 20x;
+    height: 14px;
+    width: 14px;
     border: none;
     background: none;
     background-color: var(--main-color);
     border: 3px solid #FFF;
-    z-index: 10;
 
     @media only screen and (min-width: 768px) {
-      height: 22px;
-      width: 22px; 
+      height: 16px;
+      width: 16px; 
     }
   }
 
@@ -156,8 +163,7 @@ export default {
   }
 
   &::-moz-range-track {
-    background-color: var(--main-color);
-    opacity: .25;
+    background-color: var(--main-color-rgba);
     height: 5px;
     border-radius: 3px;
     border: none;
