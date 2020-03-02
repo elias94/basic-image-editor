@@ -15,8 +15,6 @@ export const canvasImagePadding = (img, canvas) => {
   const { width: imgWidth, height: imgHeight } = img;
   const parentWidth = canvas.parentNode.offsetWidth;
   const parentHeight= canvas.parentNode.offsetHeight;
-
-  console.log('1', imgWidth, imgHeight, parentWidth, parentHeight)
   
   if (imgWidth < parentWidth) {
     return 0;
@@ -25,8 +23,6 @@ export const canvasImagePadding = (img, canvas) => {
   const canvasHeight = (parentWidth / imgWidth) * imgHeight;
   const padding = (canvasHeight - parentHeight) / 2;
 
-  console.log('2', canvasHeight, padding)
-  console.log('3', canvasHeight > parentHeight ? padding || 0 : 0)
   return canvasHeight > parentHeight ? padding || 0 : 0;
 }
 
